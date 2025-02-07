@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function Main() {
   const [meme, setMeme] = useState({
-    topText: "One does not simply",
+    topText: "On e does not simply",
     bottomText: "Walk into Mordor",
     imageUrl: "http://i.imgflip.com/1bij.jpg",
   });
@@ -21,8 +21,14 @@ export default function Main() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const randomMeme =
-    memeFetched[Math.floor(Math.random() * memeFetched.length)];
+  function getMemeImage() {
+    const randomNumber = Math.floor(Math.random() * memeFetched.length);
+    const newMemeUrl = memeFetched[randomNumber].url;
+    setMeme((prevMeme) => ({
+      ...prevMeme,
+      imageUrl: newMemeUrl,
+    }));
+  }
 
   return (
     <main>
@@ -48,10 +54,10 @@ export default function Main() {
             value={meme.bottomText}
           />
         </label>
-        <button>Get a new meme image 🖼</button>
+        <button onClick={getMemeImage}>Get a new meme image 🖼</button>
       </div>
       <div className="meme">
-        <img src={randomMeme.url} />
+        <img src={meme.imageUrl} />
         <span className="top">{meme.topText}</span>
         <span className="bottom">{meme.bottomText}</span>
       </div>
